@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ui_kit/routes/app_route.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,6 +20,8 @@ class MyApp extends StatelessWidget {
                 backgroundColor: Colors.white,
                 iconTheme: IconThemeData(color: Colors.black),
                 foregroundColor: Colors.black)),
+        initialRoute: "/home",
+        routes: AppRoute.routeInfo,
         home: HomePage());
   }
 }
@@ -27,13 +30,15 @@ class HomePage extends StatelessWidget {
   HomePage({super.key});
 
   final List<Map<String, String>> _componentList = [
-    {"name": "Buttons", "path": "abc"},
-    {"name": "Input Field"}
+    {"name": "Buttons", "path": "/buttons"},
+    {"name": "Input Field", "path": "/input-fields"}
   ];
 
-  Widget _listItem(int index) {
+  Widget _listItem(context, int index) {
     return Card(
       child: ListTile(
+        onTap: () => Navigator.pushNamed(
+            context, _componentList[index]["path"] ?? "error-page"),
         title: Text("${_componentList[index]["name"]}"),
       ),
     );
@@ -47,7 +52,7 @@ class HomePage extends StatelessWidget {
       ),
       body: ListView.builder(
         itemCount: _componentList.length,
-        itemBuilder: (context, index) => _listItem(index),
+        itemBuilder: (context, index) => _listItem(context, index),
       ),
     );
   }
